@@ -134,7 +134,7 @@ public class RationalTest {
     }
 
     //This test exercise the method pow()
-    //this test checks only the numerator
+    //this test checked initially only the numerator
     //byte value can't be checked here because the result is out of range
     @Test
     public void test05()  throws Throwable  {
@@ -146,8 +146,7 @@ public class RationalTest {
 
     // This test exercises the method reduce()
     // This test shows a bug. I think that the problem is
-    // the function control if the numerator is less than 1,
-    // but there aren't long factors that are less than 1.
+    // the function control "if the numerator is less than 1",
     @Test
     public void reduceTest() throws Throwable {
         Rational rational = new Rational (8L,8L);
@@ -172,23 +171,60 @@ public class RationalTest {
         assertEquals("Denominator expected different",4L,result.denominator);
     }
 
+    //This test exercise the method subtract()
+    //It has a bug because if I subtract a positive number x
+    //it should do y-x but it perform y+x
+    //this bug is in method subtract() because it first create a new Rational with -1 as denominator
+    //then use the method negate so x -> -x and a Rational with (-x,-1) is positive.
+    //calling then the method add, it performs an addition.
     @Test
     public void test06()  throws Throwable  {
-        Rational rational0 = new Rational((-1L), (-1L));
-        Rational rational1 = rational0.subtract((-1L));
-        assertEquals(0.0, rational1.doubleValue(), 0.01);
-        assertEquals(1L, rational1.denominator);
-        assertEquals((-1L), rational0.denominator);
+        Rational rational0 = new Rational((-5L), (-1L));
+        Rational rational1 = rational0.subtract((2L));
+        assertEquals("Double value expected different",3.0, rational1.doubleValue(), 0.01);
+        assertEquals("Resulting Denominator expected different",1L, rational1.denominator);
+    }
+    //Test that exercise the subtract() method between a positive rational and negative long number
+    @Test
+    public void subtractTestNegative() throws Throwable {
+        Rational rational0 = new Rational((-5L), (-1L));
+        Rational rational1 = rational0.subtract(-5L);
+        assertEquals("Double value expected different",10.0, rational0.doubleValue(),0.01);
+        assertEquals("Resulting Denominator expected different",1L, rational1.denominator);
+
     }
 
+    //This test exercise the method abs()
+    //this method has a bug in the denominator condition.
     @Test
     public void test07()  throws Throwable  {
-        Rational rational0 = new Rational(0L, (-1802L));
+        Rational rational0 = new Rational(-1L, (-1802L));
         Rational rational1 = rational0.abs();
-        assertEquals(-0.0, rational1.doubleValue(), 0.01);
-        assertEquals((-1802L), rational1.denominator);
+        assertEquals("Resulting Numerator expected different",1L, rational1.numerator);
+        assertEquals("Resulting Denominator expected different",(1802L), rational1.denominator);
     }
 
+    //This test exercise the method abs()
+    //this method has a bug in the denominator condition.
+    @Test
+    public void absTestNegative()  throws Throwable  {
+        Rational rational0 = new Rational(-1L, (1802L));
+        Rational rational1 = rational0.abs();
+        assertEquals("Resulting Numerator expected different",1L, rational1.numerator);
+        assertEquals("Resulting Denominator expected different",(1802L), rational1.denominator);
+    }
+
+    //This test exercise the method abs()
+    //this method has a bug in the denominator condition.
+    @Test
+    public void absTestPositive()  throws Throwable  {
+        Rational rational0 = new Rational(1L, (1802L));
+        Rational rational1 = rational0.abs();
+        assertEquals("Resulting Numerator expected different",1L, rational1.numerator);
+        assertEquals("Resulting Denominator expected different",(1802L), rational1.denominator);
+    }
+    // This method exercise the method negate()
+    // 
     @Test
     public void test08()  throws Throwable  {
         Rational rational0 = new Rational(887L, 887L);
