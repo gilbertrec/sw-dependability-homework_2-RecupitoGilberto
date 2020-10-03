@@ -8,16 +8,20 @@ import org.junit.runner.RunWith;
 
 public class OptionTest {
 
+    //This test exercise the "getArgName()" and "hasArgName()" methods
+    //If it use setArgName to empty the argName
+    //hasArgName should return false
   @Test
   public void test01()  throws Throwable  {
       Option option0 = new Option("", "");
-      assertEquals("arg", option0.getArgName());
-      
+      assertEquals("argName expected different","arg", option0.getArgName());
+
       option0.setArgName("");
       boolean boolean0 = option0.hasArgName();
-      assertTrue(boolean0);
+      assertFalse("Option object has still argName",boolean0);
   }
 
+  //
   @Test
   public void test02()  throws Throwable  {
       Option option0 = new Option("", "", true, "");
