@@ -8,8 +8,8 @@ import org.junit.runner.RunWith;
 
 public class OptionTest {
 
-    //This test exercise the "getArgName()" and "hasArgName()" methods
-    //If it use setArgName to empty the argName
+    //This test exercise the "getArgName()","setArgName()" and "hasArgName()" methods
+    //If it use setArgName to empty string the argName
     //hasArgName should return false
   @Test
   public void test01()  throws Throwable  {
@@ -18,36 +18,60 @@ public class OptionTest {
 
       option0.setArgName("");
       boolean boolean0 = option0.hasArgName();
-      assertFalse("Option object has still argName",boolean0);
+      assertFalse("Option object has argName",boolean0);
   }
 
-  //
+  // This tests checks the method getArgs()
   @Test
   public void test02()  throws Throwable  {
       Option option0 = new Option("", "", true, "");
-      option0.getKey();
-      assertEquals("arg", option0.getArgName());
-      assertEquals(1, option0.getArgs());
+      assertEquals("argName expected different","arg", option0.getArgName());
+      assertEquals("Number of arguments expected different",1, option0.getArgs());
   }
 
+  /* This tests initially checks the construction of two equals options.
+     and the construction of the argName
+     I think it's an EagerTest
+     ExtractMethod: I have splitted this test in two tests.
+  */
   @Test
   public void test03()  throws Throwable  {
       Option option0 = new Option("R", "R", true, "R");
-      Option option1 = new Option("R", "R", true, "R");
-      boolean boolean0 = option1.equals(option0);
-      assertEquals("arg", option1.getArgName());
-      assertTrue(option1.hasArg());
-      assertTrue(boolean0);
+      assertEquals("argName expected different","arg", option0.getArgName());
+      assertTrue("Option doesn't have arguments",option0.hasArg());
   }
 
+  /*
+    Test extracted from test03, this test checks the equality of two Options
+   */
+  @Test
+  public void EqualsOptionTest(){
+      Option option0 = new Option("R", "R", true, "R");
+      Option option1 = new Option("R", "R", true, "R");
+      boolean boolean0 = option1.equals(option0);
+      assertTrue(boolean0);
+  }
+    /*
+       This test checks the equality of two different Options
+    */
+    @Test
+    public void EqualsOptionTestFalse(){
+        Option option0 = new Option("R", "R", true, "R");
+        Option option1 = new Option("L", "R", true, "R");
+        boolean boolean0 = option1.equals(option0);
+        assertFalse(boolean0);
+    }
+
+
+//This test
   @Test
   public void test04()  throws Throwable  {
       Option option0 = new Option("VC", "VC");
       int int0 = option0.getId();
       assertFalse(option0.hasLongOpt());
       assertFalse(option0.hasArgs());
-      assertEquals(67, int0);
-      assertEquals("arg", option0.getArgName());
+      assertEquals("ID expected different",'V', int0);
+      assertEquals("argName expected different","arg", option0.getArgName());
   }
 
   @Test
