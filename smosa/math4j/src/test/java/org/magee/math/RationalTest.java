@@ -255,7 +255,7 @@ public class RationalTest {
     }
 
     // This test exercise the method byteValue()
-    //this additional test shows an "out of range"
+    //this additional test shows an "out of range Exception"
     @Test
     public void testByteValue() throws Throwable {
         Rational rational0 = new Rational(7721L,1L);

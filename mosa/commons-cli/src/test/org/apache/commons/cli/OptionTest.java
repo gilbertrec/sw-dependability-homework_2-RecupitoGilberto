@@ -63,17 +63,27 @@ public class OptionTest {
     }
 
 
-//This test
+/*   This test exercise the getId() method,
+     the hasArgs() and getArgName() in order to retrieve default parameters for the argument of the object
+     and the method hasLongOpt() when longOpt isn't set.
+     This test is a possible Assertion Roulette
+     In addition , considering that an option may composed on only one character
+     the id should be the first character or the entire opt string
+*/
   @Test
   public void test04()  throws Throwable  {
       Option option0 = new Option("VC", "VC");
       int int0 = option0.getId();
-      assertFalse(option0.hasLongOpt());
-      assertFalse(option0.hasArgs());
+      assertFalse("Option has LongOpt",option0.hasLongOpt());
+      assertFalse("Option has arguments",option0.hasArgs());
       assertEquals("ID expected different",'V', int0);
       assertEquals("argName expected different","arg", option0.getArgName());
   }
 
+  /*
+    This test checks the creation of the default arg and it can be redundant
+    respect to the test03
+   */
   @Test
   public void test05()  throws Throwable  {
       Option option0 = new Option("P", "P", true, "P");
@@ -83,12 +93,18 @@ public class OptionTest {
       assertEquals(1, option0.getArgs());
   }
 
+  /*
+  This test exercise the method getValue()
+  that it should launch the exception
+  I think that addValueForProcessing() is useless to test in this case getValue()
+   */
   @Test
   public void test06()  throws Throwable  {
       Option option0 = new Option("P", true, "P");
-      option0.addValueForProcessing("P");
+      //option0.addValueForProcessing("P");
       try { 
         option0.getValue(295);
+
         fail("Expecting exception: IndexOutOfBoundsException");
       
       } catch(IndexOutOfBoundsException e) {
@@ -98,6 +114,12 @@ public class OptionTest {
          verifyException("java.util.ArrayList", e);
       }
   }
+ /*
+ This test checks the equality between two different empty options,
+ testing first the method equals
+ and then the number of arguments
+ I think it's better to split it into more tests
+  */
 
   @Test
   public void test07()  throws Throwable  {
@@ -111,6 +133,30 @@ public class OptionTest {
       assertTrue(boolean0);
   }
 
+    @Test
+    public void equalsEmptyOptionTest()  throws Throwable  {
+        Option option0 = new Option("", "", true, "");
+        Option option1 = new Option("", "");
+        boolean boolean0 = option0.equals(option1);
+        assertTrue(boolean0);
+    }
+
+    @Test
+    public void emptyArgsTestNegative() throws Throwable {
+        Option option1 = new Option("", "");
+        assertEquals((-1), option1.getArgs());
+        assertFalse(option1.hasLongOpt());
+        assertEquals("arg", option1.getArgName());
+    }
+
+    @Test
+    public void emptyArgsTestPositive() throws Throwable {
+        Option option0 = new Option("", "", true, "");
+        assertEquals(1, option0.getArgs());
+    }
+
+
+//This test checks if the default argName is "arg"
   @Test
   public void test08()  throws Throwable  {
       Option option0 = new Option("", "", true, "");
@@ -119,6 +165,11 @@ public class OptionTest {
       assertTrue(option0.hasArg());
   }
 
+  /*This test should test the if the system can handle the exception of creating a "null" option
+  Moreover there is an exception about the setArgName method.
+  It sets a null string and it shouldn't set the number of arguments equals to 1.
+  and again here tests the presence of the default argName "arg"
+   */
   @Test
   public void test09()  throws Throwable  {
       Option option0 = new Option((String) null, (String) null, true, (String) null);
@@ -126,9 +177,16 @@ public class OptionTest {
       
       option0.setArgName((String) null);
       option0.getArgName();
-      assertEquals(1, option0.getArgs());
+      assertEquals(-1, option0.getArgs());
   }
 
+
+  /*
+  This test checks the equality between two options, but one with longOpt and hasArg specified
+  it checks if the second option hasn't arguments, and the first one hasn't longOpt attribute.
+  Also here, it checks if the default argName is "arg"
+
+   */
   @Test
   public void test10()  throws Throwable  {
       Option option0 = new Option("SX", "SX");
